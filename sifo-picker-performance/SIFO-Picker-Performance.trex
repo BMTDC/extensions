@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <worksheet-extension id="com.thomasdc.sifopickerperformance" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Ranks SIFO pickers by average picked units per active day with target comparison.</description>
+    <author name="Thomas De Ceuster" email="thomas.deceuster@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
+    <min-api-version>1.14</min-api-version>
+    <source-location><url>https://bmtdc.github.io/extensions/sifo-picker-performance/</url></source-location>
+    <icon/>
+    <context-menu><configure-context-menu-item/></context-menu>
+    <encoding id="date">
+      <display-name resource-id="date-name"/>
+      <data-spec data-type="temporal"/>
+      <role-spec role-type="continuous-dimension"/>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-d"/>
+      <tooltip resource-id="date-tooltip"/>
+    </encoding>
+    <encoding id="picker">
+      <display-name resource-id="picker-name"/>
+      <role-spec role-type="discrete-dimension"/>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-p"/>
+      <tooltip resource-id="picker-tooltip"/>
+    </encoding>
+    <encoding id="units">
+      <display-name resource-id="units-name"/>
+      <data-spec data-type="numeric"/>
+      <role-spec role-type="continuous-measure"/>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-u"/>
+      <tooltip resource-id="units-tooltip"/>
+    </encoding>
+    <encoding id="container">
+      <display-name resource-id="container-name"/>
+      <role-spec role-type="discrete-dimension"/>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-c"/>
+      <tooltip resource-id="container-tooltip"/>
+    </encoding>
+  </worksheet-extension>
+  <resources>
+    <resource id="name"><text locale="en_US">SIFO Picker Performance</text></resource>
+    <resource id="date-name"><text locale="en_US">Date</text></resource>
+    <resource id="date-tooltip"><text locale="en_US">Continuous transaction or pick date.</text></resource>
+    <resource id="picker-name"><text locale="en_US">Picker</text></resource>
+    <resource id="picker-tooltip"><text locale="en_US">Picker or user dimension.</text></resource>
+    <resource id="units-name"><text locale="en_US">Units</text></resource>
+    <resource id="units-tooltip"><text locale="en_US">Picked quantity measure.</text></resource>
+    <resource id="container-name"><text locale="en_US">Container</text></resource>
+    <resource id="container-tooltip"><text locale="en_US">Optional container identifier.</text></resource>
+  </resources>
+</manifest>
