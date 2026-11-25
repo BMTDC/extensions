@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <worksheet-extension id="com.thomasdc.sifochartjsmixedchart" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Clear mixed bar and line charts for SIFO productivity and operational drivers using Chart.js.</description>
+    <author name="Thomas De Ceuster" email="thomas.deceuster@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
+    <min-api-version>1.14</min-api-version>
+    <source-location><url>https://bmtdc.github.io/extensions/sifo-chartjs-mixed-chart/</url></source-location>
+    <icon/>
+    <context-menu><configure-context-menu-item/></context-menu>
+    <encoding id="date">
+      <display-name resource-id="date-name"/>
+      <data-spec><data-type>temporal</data-type></data-spec>
+      <role-spec><role-type>continuous-dimension</role-type></role-spec>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-d"/>
+      <tooltip resource-id="date-tooltip"/>
+    </encoding>
+    <encoding id="primary">
+      <display-name resource-id="primary-name"/>
+      <data-spec><data-type>numeric</data-type></data-spec>
+      <role-spec><role-type>continuous-measure</role-type></role-spec>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-p"/>
+      <tooltip resource-id="primary-tooltip"/>
+    </encoding>
+    <encoding id="secondary">
+      <display-name resource-id="secondary-name"/>
+      <data-spec><data-type>numeric</data-type></data-spec>
+      <role-spec><role-type>continuous-measure</role-type></role-spec>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-c"/>
+      <tooltip resource-id="secondary-tooltip"/>
+    </encoding>
+    <encoding id="series">
+      <display-name resource-id="series-name"/>
+      <role-spec><role-type>discrete-dimension</role-type></role-spec>
+      <fields max-count="1"/>
+      <encoding-icon token="letter-s"/>
+      <tooltip resource-id="series-tooltip"/>
+    </encoding>
+  </worksheet-extension>
+  <resources>
+    <resource id="name"><text locale="en_US">SIFO Chart.js Mixed Chart</text></resource>
+    <resource id="date-name"><text locale="en_US">Date</text></resource>
+    <resource id="date-tooltip"><text locale="en_US">Required continuous date used on the horizontal axis.</text></resource>
+    <resource id="primary-name"><text locale="en_US">Productivity</text></resource>
+    <resource id="primary-tooltip"><text locale="en_US">Required numeric productivity measure shown as bars.</text></resource>
+    <resource id="secondary-name"><text locale="en_US">Comparison</text></resource>
+    <resource id="secondary-tooltip"><text locale="en_US">Required numeric operational measure shown as a line.</text></resource>
+    <resource id="series-name"><text locale="en_US">Series</text></resource>
+    <resource id="series-tooltip"><text locale="en_US">Optional category that splits the comparison into multiple lines.</text></resource>
+  </resources>
+</manifest>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configure SIFO Chart</title>
+    <script src="../tableau.extensions.1.latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body onload="initializeConfig()" class="m-0 h-screen bg-white font-[Calibri,Arial,sans-serif]" style="--accent: #1f4e79;">
+    <main class="flex h-full flex-col p-5">
+        <div class="flex-1 overflow-auto">
+            <h1 class="text-lg font-bold text-gray-800">Configure chart</h1>
+            <p class="mt-1 text-sm text-gray-500">Control labels, axes and readability without changing the worksheet fields.</p>
+            <div id="errorBox" class="mt-4 hidden rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" aria-live="polite"></div>
+            <div class="mt-5 grid grid-cols-2 gap-4">
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Chart title</span><input id="chartTitle" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Accent colour</span><input id="accentColor" type="color" class="mt-1 h-10 w-full rounded-md border border-gray-300 p-1"></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Productivity label</span><input id="primaryLabel" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Comparison label</span><input id="secondaryLabel" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Comparison axis</span><select id="secondaryAxisMode" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"><option value="auto">Automatic</option><option value="percent">Percentage</option><option value="number">Number</option></select></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Maximum points</span><input id="maxPoints" type="number" min="7" max="100" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
+            </div>
+            <label class="mt-5 flex items-center gap-2 text-sm text-gray-700"><input id="showLegend" type="checkbox" class="h-4 w-4"> Show legend</label>
+            <label class="mt-3 flex items-center gap-2 text-sm text-gray-700"><input id="showPoints" type="checkbox" class="h-4 w-4"> Show line points</label>
+            <label class="mt-3 flex items-center gap-2 text-sm text-gray-700"><input id="beginAtZero" type="checkbox" class="h-4 w-4"> Start both axes at zero</label>
+        </div>
+        <footer class="mt-5 flex items-center justify-between border-t border-gray-200 pt-4">
+            <button id="resetButton" type="button" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700">Reset</button>
+            <div class="flex gap-2"><button id="cancelButton" type="button" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700">Cancel</button><button id="saveButton" type="button" class="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white">Save</button></div>
+        </footer>
+    </main>
+    <script src="config.js"></script>
+</body>
+</html>
