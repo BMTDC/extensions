@@ -2,7 +2,7 @@ var DEFAULTS = {
     accentColor: "#1f4e79",
     chartTitle: "Productivity and operational mix",
     primaryLabel: "Productivity",
-    secondaryLabel: "Comparison",
+    secondaryLabel: "Measure values",
     secondaryAxisMode: "auto",
     maxPoints: "35",
     showLegend: "true",

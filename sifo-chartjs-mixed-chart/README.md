@@ -1,27 +1,27 @@
 # SIFO Chart.js Mixed Chart
 
-A Tableau worksheet viz extension that replaces dense native dual-axis graphs with a readable Chart.js mixed chart: productivity bars on the left axis and one or more operational comparison lines on the right axis.
+A Tableau worksheet viz extension that renders productivity as bars and every selected Measure Values item as its own Chart.js line.
 
 ## Encodings
 
 - **Date** (`date`): required continuous dimension. Recommended: `Pick date`.
 - **Productivity** (`primary`): required continuous measure. Recommended: `AVG(Prod)`.
-- **Comparison** (`secondary`): required continuous measure. Examples: `Pct 33M`, `Pct units directs`, `Units per container`, or `Average per list per location`.
-- **Series** (`series`): optional discrete dimension. Use a category field when comparison data is stored in rows. Leave empty when using one comparison measure.
+- **Measure Names** (`measureNames`): required discrete dimension. Use Tableau's generated `Measure Names` field.
+- **Measure Values** (`measureValues`): required continuous measure. Use Tableau's generated `Measure Values` field.
 
-Viz extensions support a maximum of four custom encoding tiles, so this extension is intentionally reusable per graph rather than attempting to place all report measures into one worksheet.
+Tableau creates Measure Names and Measure Values automatically. Measure Names supplies the line labels and Measure Values supplies each line's numeric values.
 
 ## Settings
 
-- Accent colour: `#1f4e79`
-- Chart title: `Productivity and operational mix`
-- Primary label: `Productivity`
-- Comparison label: `Comparison`
-- Comparison axis: automatic, percentage or number
-- Maximum points: `35` (7–100)
-- Legend: shown
-- Line points: hidden
-- Axes start at zero: enabled
+- `accentColor`: `#1f4e79`
+- `chartTitle`: `Productivity and operational mix`
+- `primaryLabel`: `Productivity`
+- `secondaryLabel`: `Measure values`
+- `secondaryAxisMode`: `auto`
+- `maxPoints`: `35`
+- `showLegend`: `true`
+- `showPoints`: `false`
+- `beginAtZero`: `true`
 
 ## Hosting
 
@@ -29,55 +29,48 @@ Viz extensions support a maximum of four custom encoding tiles, so this extensio
 - Production URL: https://bmtdc.github.io/extensions/sifo-chartjs-mixed-chart/
 - TREX: `SIFO-ChartJS-Mixed-Chart.trex`
 
-Upload this exact folder under the repository's `extensions` directory. The folder name and URL are case-sensitive.
+Upload this exact folder under the repository's `extensions` directory. Do not rename it. The shared Tableau API library must remain at `extensions/tableau.extensions.1.latest.js` and is loaded with `../tableau.extensions.1.latest.js`.
 
-The extension loads the shared Tableau API library from `../tableau.extensions.1.latest.js`. Do not copy that file into this folder.
-
-Chart.js is loaded from `https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js`. Tableau and the user's browser must be allowed to reach jsDelivr. If your environment blocks public CDNs, download that exact UMD file into the shared parent folder and update the script reference before deployment.
+Chart.js is loaded from `https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js`.
 
 ## Deployment
 
-1. Upload the complete `sifo-chartjs-mixed-chart` folder to `extensions/` in the `bmtdc.github.io` repository.
-2. Confirm the shared `tableau.extensions.1.latest.js` exists directly in the parent `extensions/` folder.
-3. Commit and push.
-4. Open https://bmtdc.github.io/extensions/sifo-chartjs-mixed-chart/ and verify it does not return 404.
-5. The standalone page will show an initialization message outside Tableau; that is expected.
+1. Replace the existing files inside `extensions/sifo-chartjs-mixed-chart/` with this complete version.
+2. Commit and push the changes.
+3. Verify https://bmtdc.github.io/extensions/sifo-chartjs-mixed-chart/ does not return 404.
+4. Re-import the updated `SIFO-ChartJS-Mixed-Chart.trex` because the manifest version and encoding tiles changed.
 
-## Add to the SIFO workbook
+## Tableau setup
 
-1. Open the SIFO report in Tableau Desktop.
-2. Create or duplicate a worksheet for the graph being replaced.
-3. From the Marks type menu, select **Add Extension** and then **Access Local Viz Extensions**.
-4. Open `SIFO-ChartJS-Mixed-Chart.trex`.
-5. Assign `Pick date` to **Date**.
-6. Assign `AVG(Prod)` to **Productivity**.
-7. Assign one operational measure to **Comparison**.
-8. Optionally assign a category dimension to **Series**.
-9. Add the same client, warehouse, shift, SD110D01 and date filters used by the existing worksheet.
-10. Open the extension context menu and select **Configure** to set the title, labels, axis type, colours and number of displayed periods.
-11. Replace the old worksheet on the dashboard only after validating totals and filter behaviour.
+1. Add the extension from the updated TREX.
+2. Put `Pick date` on **Date**.
+3. Put `AVG(Prod)` on **Productivity**.
+4. Put Tableau's generated `Measure Names` field on **Measure Names**.
+5. Put Tableau's generated `Measure Values` field on **Measure Values**.
+6. Use the resulting Measure Values card to keep only the measures that should become lines.
+7. Use a Measure Names filter to control which lines remain visible.
+8. Open **Configure** to set the right-axis format to Automatic, Percentage, or Number.
 
-## Recommended report replacements
-
-- **Location mix**: Productivity = `AVG(Prod)`; Comparison = a percentage measure such as `Pct 33M`; use separate extension worksheets per measure unless the percentages are pivoted into a category/value structure.
-- **Units per location/list + UPC**: Productivity = `AVG(Prod)`; Comparison = `Average per list per location` or `Units per container`.
-- **Directs versus holds**: Productivity = `AVG(Prod)`; Comparison = `Pct units directs` or `Pct holds`.
-- **SIFO type**: Productivity = `AVG(Prod)`; Comparison = `SIFO1 pct` through `SIFO4 pct`, preferably after pivoting these fields into one category and one value field.
-- **Order size**: Productivity = `AVG(Prod)`; Comparison = one of the order-size percentage or unit measures.
+Example: keep `Pct 33M`, `Pct 33P`, `Pct 43M`, `Pct 43P`, and `Pct 53P` on the Measure Values card. Productivity remains the bar series and the five measures become five line series.
 
 ## Behaviour
 
-The extension averages values for duplicate date/series combinations in the summary data. It then displays the last configured number of dates. The primary measure is rendered as bars. Comparison values are rendered as lines on a separate right axis. Automatic percentage detection treats a comparison as a percentage when every visible value is between 0 and 100; override this in Configure when necessary.
+- Productivity uses the left axis.
+- All selected Measure Values use the right axis.
+- Each distinct Measure Names value becomes a separate Chart.js line and legend item.
+- Duplicate date and Measure Names rows are averaged.
+- The right axis is shared by all Measure Values. Do not mix percentages and unit counts on that axis unless their scales are intentionally comparable.
+- The chart redraws after summary-data changes and debounced window resizing.
 
-## Validation and troubleshooting
+## Troubleshooting
 
-- Missing field message: add Date, Productivity and Comparison encodings.
-- Column matching message: ensure encoded fields are present in worksheet summary data.
-- Chart.js load message: allow `cdn.jsdelivr.net`, or host the UMD file internally.
-- Incorrect percentages: set Comparison axis to **Percentage** or **Number** manually.
-- Too many labels: reduce Maximum points or aggregate Pick date to week/month in Tableau.
-- Shift comparison: use the existing Shift filter. A viz extension cannot independently read dashboard filters that do not affect its worksheet.
+- Only one line: check that multiple measures remain on the Measure Values card and that the Measure Names filter does not restrict the view to one measure.
+- Missing encoding message: assign all four fields, including both generated Tableau fields.
+- Unmatched columns: ensure Measure Names and Measure Values are part of the extension worksheet's summary data.
+- Incorrect scaling: set the Measure Values axis to Percentage or Number in Configure.
+- Chart.js load error: permit `cdn.jsdelivr.net` or host the UMD file internally.
 
 ## Changelog
 
-- 1.0.0: Initial Chart.js mixed-chart extension for clearer SIFO productivity comparisons.
+- 1.1.0: Replaced the single Comparison and optional Series encodings with native Measure Names and Measure Values support; every selected measure now renders as a separate line.
+- 1.0.0: Initial Chart.js mixed-chart extension.

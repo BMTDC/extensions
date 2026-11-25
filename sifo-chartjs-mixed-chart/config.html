@@ -11,13 +11,13 @@
     <main class="flex h-full flex-col p-5">
         <div class="flex-1 overflow-auto">
             <h1 class="text-lg font-bold text-gray-800">Configure chart</h1>
-            <p class="mt-1 text-sm text-gray-500">Control labels, axes and readability without changing the worksheet fields.</p>
+            <p class="mt-1 text-sm text-gray-500">Control labels, axes and readability for Tableau Measure Values.</p>
             <div id="errorBox" class="mt-4 hidden rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" aria-live="polite"></div>
             <div class="mt-5 grid grid-cols-2 gap-4">
                 <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Chart title</span><input id="chartTitle" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
                 <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Accent colour</span><input id="accentColor" type="color" class="mt-1 h-10 w-full rounded-md border border-gray-300 p-1"></label>
                 <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Productivity label</span><input id="primaryLabel" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
-                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Comparison label</span><input id="secondaryLabel" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
+                <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Measure Values axis label</span><input id="secondaryLabel" type="text" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
                 <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Comparison axis</span><select id="secondaryAxisMode" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"><option value="auto">Automatic</option><option value="percent">Percentage</option><option value="number">Number</option></select></label>
                 <label class="block"><span class="text-xs font-medium uppercase tracking-wide text-gray-500">Maximum points</span><input id="maxPoints" type="number" min="7" max="100" class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"></label>
             </div>

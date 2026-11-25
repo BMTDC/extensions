@@ -1,15 +1,15 @@
 var ENC = {
     DATE: "date",
     PRIMARY: "primary",
-    SECONDARY: "secondary",
-    SERIES: "series"
+    MEASURE_NAMES: "measureNames",
+    MEASURE_VALUES: "measureValues"
 };
 
 var DEFAULTS = {
     accentColor: "#1f4e79",
     chartTitle: "Productivity and operational mix",
     primaryLabel: "Productivity",
-    secondaryLabel: "Comparison",
+    secondaryLabel: "Measure values",
     secondaryAxisMode: "auto",
     maxPoints: "35",
     showLegend: "true",
@@ -22,7 +22,7 @@ var CLS = {
     chart: "relative h-full min-h-56 w-full rounded-lg border border-gray-200 bg-gray-50 p-3"
 };
 
-var COLORS = ["#2e75b6", "#9dc3e6", "#c55a11", "#7f7f7f", "#548235", "#7030a0"];
+var COLORS = ["#2e75b6", "#9dc3e6", "#c55a11", "#7f7f7f", "#548235", "#7030a0", "#4472c4", "#ed7d31", "#70ad47", "#a5a5a5"];
 var state = { settings: {}, chart: null, points: [], timer: null };
 
 async function initialize() {
@@ -53,9 +53,9 @@ async function loadData() {
         encodings.forEach(function (encoding) {
             if (encoding.field) fields[encoding.id] = encoding.field.name;
         });
-        var missing = [ENC.DATE, ENC.PRIMARY, ENC.SECONDARY].filter(function (id) { return !fields[id]; });
+        var missing = [ENC.DATE, ENC.PRIMARY, ENC.MEASURE_NAMES, ENC.MEASURE_VALUES].filter(function (id) { return !fields[id]; });
         if (missing.length) {
-            showMessage("Add fields to Date, Productivity and Comparison on the Marks card.");
+            showMessage("Add Date, Productivity, Measure Names and Measure Values to the four encoding tiles on the Marks card.");
             return;
         }
         var summary = await worksheet.getSummaryDataAsync({ ignoreSelection: true });
@@ -66,16 +66,16 @@ async function loadData() {
         var indexes = {
             date: findColumnIndex(summary.columns, fields[ENC.DATE]),
             primary: findColumnIndex(summary.columns, fields[ENC.PRIMARY]),
-            secondary: findColumnIndex(summary.columns, fields[ENC.SECONDARY]),
-            series: fields[ENC.SERIES] ? findColumnIndex(summary.columns, fields[ENC.SERIES]) : -1
+            measureNames: findColumnIndex(summary.columns, fields[ENC.MEASURE_NAMES]),
+            measureValues: findColumnIndex(summary.columns, fields[ENC.MEASURE_VALUES])
         };
-        if (indexes.date < 0 || indexes.primary < 0 || indexes.secondary < 0 || (fields[ENC.SERIES] && indexes.series < 0)) {
+        if (indexes.date < 0 || indexes.primary < 0 || indexes.measureNames < 0 || indexes.measureValues < 0) {
             showMessage("The encoded fields could not be matched to summary data. Available columns: " + summary.columns.map(function (column) { return column.fieldName; }).join(", "));
             return;
         }
         state.points = aggregate(summary.data, indexes);
         if (!state.points.length) {
-            showMessage("No valid dated values are available for the current filters.");
+            showMessage("No valid Measure Values are available. Keep Measure Names and Measure Values together and retain at least one measure on the Measure Values card.");
             return;
         }
         draw();
@@ -88,14 +88,18 @@ function aggregate(data, indexes) {
     var grouped = {};
     data.forEach(function (row) {
         var day = toDay(row[indexes.date].nativeValue);
-        if (!day) return;
-        var series = indexes.series >= 0 ? String(row[indexes.series].formattedValue || row[indexes.series].nativeValue || "Comparison") : "Comparison";
-        var key = day + "|" + series;
-        if (!grouped[key]) grouped[key] = { day: day, series: series, primaryTotal: 0, primaryCount: 0, secondaryTotal: 0, secondaryCount: 0 };
+        var series = String(row[indexes.measureNames].formattedValue || row[indexes.measureNames].nativeValue || "Measure");
         var primary = numericCell(row[indexes.primary]);
-        var secondary = numericCell(row[indexes.secondary]);
-        if (primary !== null) { grouped[key].primaryTotal += primary; grouped[key].primaryCount += 1; }
-        if (secondary !== null) { grouped[key].secondaryTotal += secondary; grouped[key].secondaryCount += 1; }
+        var measureValue = numericCell(row[indexes.measureValues]);
+        if (!day || measureValue === null) return;
+        var key = day + "|" + series;
+        if (!grouped[key]) grouped[key] = { day: day, series: series, primaryTotal: 0, primaryCount: 0, valueTotal: 0, valueCount: 0 };
+        if (primary !== null) {
+            grouped[key].primaryTotal += primary;
+            grouped[key].primaryCount += 1;
+        }
+        grouped[key].valueTotal += measureValue;
+        grouped[key].valueCount += 1;
     });
     var points = Object.keys(grouped).map(function (key) {
         var item = grouped[key];
@@ -103,7 +107,7 @@ function aggregate(data, indexes) {
             day: item.day,
             series: item.series,
             primary: item.primaryCount ? item.primaryTotal / item.primaryCount : null,
-            secondary: item.secondaryCount ? item.secondaryTotal / item.secondaryCount : null
+            value: item.valueCount ? item.valueTotal / item.valueCount : null
         };
     }).sort(function (a, b) { return a.day.localeCompare(b.day) || a.series.localeCompare(b.series); });
     var days = Array.from(new Set(points.map(function (point) { return point.day; })));
@@ -118,7 +122,10 @@ function draw() {
         return;
     }
     ensureCanvas();
-    if (state.chart) { state.chart.destroy(); state.chart = null; }
+    if (state.chart) {
+        state.chart.destroy();
+        state.chart = null;
+    }
     var labels = Array.from(new Set(state.points.map(function (point) { return point.day; }))).sort();
     var seriesNames = Array.from(new Set(state.points.map(function (point) { return point.series; }))).sort();
     var primaryByDay = {};
@@ -140,10 +147,10 @@ function draw() {
     }];
     seriesNames.forEach(function (series, index) {
         var byDay = {};
-        state.points.filter(function (point) { return point.series === series; }).forEach(function (point) { byDay[point.day] = point.secondary; });
+        state.points.filter(function (point) { return point.series === series; }).forEach(function (point) { byDay[point.day] = point.value; });
         datasets.push({
             type: "line",
-            label: seriesNames.length > 1 ? series : state.settings.secondaryLabel,
+            label: series,
             data: labels.map(function (day) { return byDay[day] === undefined ? null : byDay[day]; }),
             borderColor: COLORS[index % COLORS.length],
             backgroundColor: COLORS[index % COLORS.length],
@@ -156,7 +163,7 @@ function draw() {
             order: 1
         });
     });
-    var percent = isPercentMode(state.points.map(function (point) { return point.secondary; }));
+    var percent = isPercentMode(state.points.map(function (point) { return point.value; }));
     state.chart = new Chart(document.getElementById("mainChart"), {
         data: { labels: labels.map(formatDay), datasets: datasets },
         options: {
@@ -181,7 +188,7 @@ function draw() {
     controls.classList.remove("hidden");
     controls.classList.add("flex");
     document.getElementById("rangeLabel").textContent = formatDay(labels[0]) + " to " + formatDay(labels[labels.length - 1]);
-    document.getElementById("rowLabel").textContent = labels.length + " periods · " + seriesNames.length + " comparison series";
+    document.getElementById("rowLabel").textContent = labels.length + " periods · " + seriesNames.length + " Measure Values series";
 }
 
 function isPercentMode(values) {
@@ -193,7 +200,7 @@ function isPercentMode(values) {
 
 function ensureCanvas() {
     var box = document.getElementById("resultBox");
-    if (!document.getElementById("mainChart")) box.innerHTML = '<div id="chartContainer" class="' + CLS.chart + '"><canvas id="mainChart" role="img" aria-label="SIFO productivity comparison chart"></canvas></div>';
+    if (!document.getElementById("mainChart")) box.innerHTML = '<div id="chartContainer" class="' + CLS.chart + '"><canvas id="mainChart" role="img" aria-label="SIFO productivity and Measure Values chart"></canvas></div>';
 }
 
 async function openSettings() {
@@ -210,7 +217,10 @@ function findColumnIndex(columns, fieldName) {
     var exact = columns.findIndex(function (column) { return column.fieldName === fieldName; });
     if (exact >= 0) return exact;
     var wanted = String(fieldName).toLowerCase();
-    return columns.findIndex(function (column) { var actual = String(column.fieldName || "").toLowerCase(); return actual.indexOf(wanted) >= 0 || wanted.indexOf(actual) >= 0; });
+    return columns.findIndex(function (column) {
+        var actual = String(column.fieldName || "").toLowerCase();
+        return actual.indexOf(wanted) >= 0 || wanted.indexOf(actual) >= 0;
+    });
 }
 
 function numericCell(cell) { var value = Number(cell.nativeValue); return isFinite(value) ? value : null; }
