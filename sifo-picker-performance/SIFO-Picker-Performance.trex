@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
-  <worksheet-extension id="com.thomasdc.sifopickerperformance" extension-version="1.0.0">
+  <worksheet-extension id="com.thomasdc.sifopickerperformance" extension-version="1.0.1">
     <default-locale>en_US</default-locale>
     <name resource-id="name"/>
     <description>Ranks SIFO pickers by average picked units per active day with target comparison.</description>
@@ -11,30 +11,30 @@
     <context-menu><configure-context-menu-item/></context-menu>
     <encoding id="date">
       <display-name resource-id="date-name"/>
-      <data-spec data-type="temporal"/>
-      <role-spec role-type="continuous-dimension"/>
+      <data-spec><data-type>temporal</data-type></data-spec>
+      <role-spec><role-type>continuous-dimension</role-type></role-spec>
       <fields max-count="1"/>
       <encoding-icon token="letter-d"/>
       <tooltip resource-id="date-tooltip"/>
     </encoding>
     <encoding id="picker">
       <display-name resource-id="picker-name"/>
-      <role-spec role-type="discrete-dimension"/>
+      <role-spec><role-type>discrete-dimension</role-type></role-spec>
       <fields max-count="1"/>
       <encoding-icon token="letter-p"/>
       <tooltip resource-id="picker-tooltip"/>
     </encoding>
     <encoding id="units">
       <display-name resource-id="units-name"/>
-      <data-spec data-type="numeric"/>
-      <role-spec role-type="continuous-measure"/>
+      <data-spec><data-type>numeric</data-type></data-spec>
+      <role-spec><role-type>continuous-measure</role-type></role-spec>
       <fields max-count="1"/>
       <encoding-icon token="letter-u"/>
       <tooltip resource-id="units-tooltip"/>
     </encoding>
     <encoding id="container">
       <display-name resource-id="container-name"/>
-      <role-spec role-type="discrete-dimension"/>
+      <role-spec><role-type>discrete-dimension</role-type></role-spec>
       <fields max-count="1"/>
       <encoding-icon token="letter-c"/>
       <tooltip resource-id="container-tooltip"/>

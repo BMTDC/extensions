@@ -12,7 +12,7 @@ Upload this exact folder name under the GitHub repository's `extensions` directo
 
 ## Required local library
 
-Copy `tableau.extensions.1.latest.js` unchanged from the existing Improved KPI extension folder into this folder. It is intentionally not included in this package.
+The extension loads the single shared `tableau.extensions.1.latest.js` from the parent `/extensions/` folder using `../tableau.extensions.1.latest.js`. Do not copy it into this extension folder.
 
 ## Encodings
 
@@ -34,7 +34,7 @@ Copy `tableau.extensions.1.latest.js` unchanged from the existing Improved KPI e
 
 1. Create `extensions/sifo-picker-performance/` in the `bmtdc.github.io` repository.
 2. Copy every file from this package into that folder.
-3. Copy `tableau.extensions.1.latest.js` unchanged from the KPI folder into the same folder.
+3. Confirm the shared `tableau.extensions.1.latest.js` already exists in the parent `/extensions/` folder.
 4. Commit and push to GitHub Pages.
 5. Verify https://bmtdc.github.io/extensions/sifo-picker-performance/ opens without a 404.
 
@@ -75,4 +75,5 @@ For each picker, the extension sums the encoded Units measure and divides by the
 
 ## Changelog
 
+- 1.0.1: Fixed TREX `data-spec` and `role-spec` schema structure and switched the API library reference to the shared parent copy.
 - 1.0.0: Initial SIFO picker-performance extension.
