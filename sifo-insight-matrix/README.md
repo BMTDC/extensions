@@ -1,53 +1,31 @@
-# SIFO Insight Matrix
+# SIFO Insight Matrix 1.0.1
 
-A Tableau viz extension designed for the `WH - BE GRO1 - SD SIFO PICK Post BF` workbook. It combines a compact KPI summary, ranked performance bars, target comparison, volume context, search, sorting and an automatically generated operational insight.
+Corrected Tableau Viz Extension package.
 
-## Field assignment
+## Changes from 1.0.0
+- Removed the invalid `summary data` permission. Summary data does not require a permissions declaration.
+- Reduced the extension to Tableau's maximum of four custom encodings.
+- Removed Target as a field encoding. Target is now configured in extension settings.
+- Corrected data type `date` to `temporal`.
+- Corrected role types to `continuous-dimension`, `discrete-dimension`, and `continuous-measure`.
+- Replaced unsupported `calendar` icon with supported letter tokens.
+- JavaScript no longer expects a Target field.
 
-- **Group**: one dimension such as Shift, Zone, SIFO type, User, Day/Hour or Order size category.
-- **Productivity**: one measure such as average productivity or units per hour.
-- **Volume (optional)**: units, orders, locations or containers. Used as the weighting factor.
-- **Target (optional)**: a target measure. When absent, the configured default target is used.
-- **Date (optional)**: a continuous date used to display the active period.
-
-Recommended first setup for this workbook:
-- Group: `Shift` or a zone field
-- Productivity: the existing productivity measure used in the corresponding Avg prod worksheet
-- Volume: `Units picked`, `Orders picked`, `Container count` or `Location count`
-- Target: a calculated constant or target field matching the productivity unit
-- Date: `Transaction date`
+## Encodings
+1. Date (optional): temporal, continuous dimension
+2. Group: discrete dimension
+3. Productivity: continuous measure
+4. Volume (optional): continuous measure
 
 ## Hosting
+Upload `index.html`, `styles.css`, `app.js`, `config.html`, and `config.js` to the root of the GitHub Pages repository so that this URL resolves:
 
-1. Create a GitHub repository named `SIFO-Insight-Matrix` under the `bmtdc` account.
-2. Upload `index.html`, `styles.css`, `app.js`, `config.html`, and `config.js` to the repository root.
-3. Enable GitHub Pages from the main branch/root.
-4. Confirm that `https://bmtdc.github.io/SIFO-Insight-Matrix/index.html` loads.
-5. If a different host is used, update the exact HTTPS URL in `SIFO-Insight-Matrix.trex`.
+https://bmtdc.github.io/SIFO-Insight-Matrix/index.html
 
-## Install in Tableau
+If you use another URL, change `<source-location>` in `SIFO-Insight-Matrix.trex` before opening it in Tableau.
 
-1. Open a worksheet in Tableau Desktop 2026.2 or Tableau Cloud web authoring.
-2. In the Marks type menu, choose **Add Extension** > **Access Local Viz Extensions**.
-3. Select `SIFO-Insight-Matrix.trex` and allow summary data access when prompted.
-4. Assign the fields above on the new encoding cards.
-5. Use **Format Extension** / **Configure** to adjust warning, good and default-target thresholds.
-6. Add the worksheet to the relevant dashboard.
-
-## Validation and first-run checklist
-
-- TREX parses as XML and contains exactly one worksheet-extension.
-- Encoding IDs in TREX and JavaScript are synchronized: date, group, productivity, volume, target.
-- JavaScript syntax passes `node --check`.
-- Test with Shift, Zone and SIFO type as Group.
-- Verify filtering and date context refresh the extension.
-- Verify missing optional fields, null values, zero volume and empty filters show safe states.
-- Check settings save, cancel and reset.
-- Resize from roughly 320 px to full dashboard width.
-- Confirm Tableau Cloud allows the GitHub Pages host and summary-data permission.
-
-## Assumptions
-
-- The GitHub Pages path is based on the existing `bmtdc.github.io` convention and must be changed if that repository will not be used.
-- Bleckmann styling uses a restrained orange/charcoal/white scheme; confirm locally approved brand tokens before broad publication.
-- The extension uses summary data only and does not transmit data to another service.
+## Tableau setup
+1. Add the local `SIFO-Insight-Matrix.trex` as a Viz Extension.
+2. Assign Group and Productivity.
+3. Optionally assign Date and Volume.
+4. Open Configure/Format Extension and set the productivity target plus warning/good thresholds.
