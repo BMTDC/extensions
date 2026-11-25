@@ -1,6 +1,9 @@
-# SIFO Insight Matrix 1.0.1
+# SIFO Insight Matrix 1.0.3
 
 Corrected Tableau Viz Extension package.
+
+## Changes in 1.0.2
+- Added the required author `email` attribute to the TREX manifest.
 
 ## Changes from 1.0.0
 - Removed the invalid `summary data` permission. Summary data does not require a permissions declaration.
@@ -20,7 +23,7 @@ Corrected Tableau Viz Extension package.
 ## Hosting
 Upload `index.html`, `styles.css`, `app.js`, `config.html`, and `config.js` to the root of the GitHub Pages repository so that this URL resolves:
 
-https://bmtdc.github.io/SIFO-Insight-Matrix/index.html
+https://bmtdc.github.io/extensions/sifo-insight-matrix/
 
 If you use another URL, change `<source-location>` in `SIFO-Insight-Matrix.trex` before opening it in Tableau.
 

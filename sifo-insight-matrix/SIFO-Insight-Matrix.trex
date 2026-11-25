@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
-  <worksheet-extension id="com.thomasdc.sifoinsightmatrix" extension-version="1.0.1">
+  <worksheet-extension id="com.thomasdc.sifoinsightmatrix" extension-version="1.0.3">
     <default-locale>en_US</default-locale>
     <name resource-id="name"/>
     <description>Operational SIFO productivity overview with KPI context, configurable target, ranking and automatic insights.</description>
-    <author name="Thomas De Ceuster" organization="Bleckmann" website="https://www.bleckmann.com"/>
+    <author name="Thomas De Ceuster" email="thomas.deceuster@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
     <min-api-version>1.14</min-api-version>
     <source-location>
       <url>https://bmtdc.github.io/extensions/sifo-insight-matrix/</url>
