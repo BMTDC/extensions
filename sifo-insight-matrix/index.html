@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIFO Insight Matrix</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://tableau.github.io/extensions-api/lib/tableau.extensions.1.latest.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main id="app" class="app" aria-live="polite">
+    <section id="loading" class="state"><div class="spinner"></div><p>Loading SIFO performance…</p></section>
+    <section id="error" class="state hidden" role="alert"></section>
+    <section id="empty" class="state hidden"><h2>Assign fields to the extension</h2><p>Add a group and productivity measure on the Marks card. Date, volume and target are optional.</p></section>
+    <section id="content" class="hidden">
+      <header class="topbar">
+        <div><p class="eyebrow">SIFO PICK PERFORMANCE</p><h1>Operational insight matrix</h1><p id="scope" class="scope"></p></div>
+        <div class="toolbar">
+          <label class="search"><span class="sr-only">Search groups</span><input id="search" type="search" placeholder="Search group…"></label>
+          <select id="sort" aria-label="Sort groups"><option value="performance-asc">Needs attention</option><option value="performance-desc">Best performance</option><option value="volume-desc">Highest volume</option><option value="name-asc">Name A–Z</option></select>
+        </div>
+      </header>
+      <section id="kpis" class="kpis"></section>
+      <section class="panel insight-panel"><div><p class="eyebrow">AUTOMATIC INSIGHT</p><p id="insight" class="insight"></p></div><div id="legend" class="legend"></div></section>
+      <section class="panel"><div class="panel-head"><div><h2>Performance by group</h2><p>Productivity versus target, with volume as context.</p></div><span id="rowcount" class="rowcount"></span></div><div id="rows" class="rows"></div></section>
+    </section>
+  </main>
+</body>
+</html>

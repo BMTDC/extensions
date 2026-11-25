@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <worksheet-extension id="com.thomasdc.sifoinsightmatrix" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Operational SIFO productivity overview with KPI context, thresholds, ranking and automatic insights.</description>
+    <author name="Thomas De Ceuster" email="thomas.deceuster@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
+    <min-api-version>1.14</min-api-version>
+    <source-location><url>https://bmtdc.github.io/SIFO-Insight-Matrix/index.html</url></source-location>
+    <icon/>
+    <permissions><permission>summary data</permission></permissions>
+    <context-menu><configure-context-menu-item/></context-menu>
+    <encoding id="date"><display-name resource-id="date-name"/><data-spec><data-type>date</data-type></data-spec><role-spec><role-type>dimension</role-type></role-spec><fields max-count="1"/><encoding-icon token="calendar"/></encoding>
+    <encoding id="group"><display-name resource-id="group-name"/><role-spec><role-type>dimension</role-type></role-spec><fields max-count="1"/><encoding-icon token="letter-d"/></encoding>
+    <encoding id="productivity"><display-name resource-id="productivity-name"/><data-spec><data-type>numeric</data-type></data-spec><role-spec><role-type>measure</role-type></role-spec><fields max-count="1"/><encoding-icon token="letter-m"/></encoding>
+    <encoding id="volume"><display-name resource-id="volume-name"/><data-spec><data-type>numeric</data-type></data-spec><role-spec><role-type>measure</role-type></role-spec><fields max-count="1"/><encoding-icon token="letter-m"/></encoding>
+    <encoding id="target"><display-name resource-id="target-name"/><data-spec><data-type>numeric</data-type></data-spec><role-spec><role-type>measure</role-type></role-spec><fields max-count="1"/><encoding-icon token="letter-m"/></encoding>
+  </worksheet-extension>
+  <resources>
+    <resource id="name"><text locale="en_US">SIFO Insight Matrix</text></resource>
+    <resource id="date-name"><text locale="en_US">Date (optional)</text></resource>
+    <resource id="group-name"><text locale="en_US">Group</text></resource>
+    <resource id="productivity-name"><text locale="en_US">Productivity</text></resource>
+    <resource id="volume-name"><text locale="en_US">Volume (optional)</text></resource>
+    <resource id="target-name"><text locale="en_US">Target (optional)</text></resource>
+  </resources>
+</manifest>
